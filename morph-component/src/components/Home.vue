@@ -3,7 +3,7 @@
 ================================================== -->
 <template>
   <div class="page-wrapper">
-    <div id="target-box">
+    <div id="target-box" :style="getBgColor">
     </div>
     <div class="box-wrapper">
       <elastic-box
@@ -11,7 +11,8 @@
         :initialHeight="300"
         :initialFill="'seagreen'"
         :targetElementId="'target-box'"
-        @completed="completed()"
+        @started-morphing-into-target="morphStarted()"
+        @finished-morphing-into-target="morphFinished()"
       />
     </div>
   </div>
@@ -28,9 +29,27 @@ export default {
   components: {
     ElasticBox
   },
+  data () {
+    return {
+      morphed: false
+    }
+  },
+  computed: {
+    getBgColor () {
+      if (!this.morphed) {
+        return {'background-color': 'yellow'}
+      } else {
+        return {'background-color': 'seagreen'}
+      }
+    }
+  },
   methods: {
-    completed () {
-      console.log('completed!')
+    morphStarted () {
+      console.log('morph started')
+    },
+    morphFinished () {
+      console.log('morph finished')
+      this.morphed = true
     }
   }
 }
@@ -55,6 +74,5 @@ export default {
   height: 400px;
   left: 300px;
   top: 500px;
-  background-color: yellow;
 }
 </style>
