@@ -5,6 +5,7 @@
       :is-visible="isModalVisible"
       :bg-color="modalBgColor"
       :origin-element-id="originElementId"
+      @close-modal="closeModal"
     />
     <home
       @morph-done="showModal"
@@ -35,6 +36,9 @@ export default {
       this.modalBgColor = payload.appButtonBgColor
       this.originElementId = payload.originElementId
       this.isModalVisible = true
+    },
+    closeModal () {
+      this.isModalVisible = false
     }
   }
 }

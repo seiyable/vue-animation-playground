@@ -12,10 +12,6 @@
         @morph-done="morphDone"
       />
     </ul>
-    <!-- <div id="origin-box" v-morph="morphOption" @click="clicked($event)">
-    </div>
-    <div id="target-box">
-    </div> -->
   </div>
 </template>
 

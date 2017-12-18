@@ -50,8 +50,6 @@ export default {
       this.origin.el = originElement
       this.target.el = document.getElementById(targetElementId)
 
-      console.log('target el id', targetElementId)
-
       // set parameters for the origin box
       let originBcr = this.origin.el.getBoundingClientRect()
       this.origin.absX = originBcr.left
@@ -61,8 +59,8 @@ export default {
 
       // set parameters for the target box
       let targetBcr = this.target.el.getBoundingClientRect()
-      this.target.absX = targetBcr.left + window.pageXOffset
-      this.target.absY = targetBcr.top + window.pageYOffset
+      this.target.absX = targetBcr.left
+      this.target.absY = targetBcr.top
       this.target.w = this.target.el.offsetWidth
       this.target.h = this.target.el.offsetHeight
 

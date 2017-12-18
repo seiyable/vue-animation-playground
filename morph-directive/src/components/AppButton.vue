@@ -5,7 +5,7 @@
   <div
     class="app-button"
     :style="[getBgColor]"
-    v-morph="morphOption"
+    v-morph
     @click="clicked($event)"
   >
   </div>
@@ -20,11 +20,13 @@ export default {
   props: {
     bgColor: String
   },
-  data () {
-    return {
-      morphOption: {
+  computed: {
+    getBgColor () {
+      return {'background-color': this.bgColor}
+    },
+    getMorphOption () {
+      return {
         targetElementId: 'modal-window',
-        triggerEventType: 'morph', // or just 'click'
         params: {
           'background-color': false,
           'border-radius': true
@@ -35,15 +37,10 @@ export default {
       }
     }
   },
-  computed: {
-    getBgColor () {
-      return {'background-color': this.bgColor}
-    }
-  },
   methods: {
     clicked (e) {
       // trigger the morphing event
-      e.toElement.dispatchEvent(new Event('morph'))
+      e.toElement.dispatchEvent(new CustomEvent('morph', {'detail': this.getMorphOption}))
     },
     morphDone () {
       console.log('morph is done!!!')

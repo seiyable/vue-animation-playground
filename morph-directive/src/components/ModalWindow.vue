@@ -5,7 +5,8 @@
   <div
     id="modal-window"
     :style="[getVisibility, getBgColor]"
-    v-morph="morphOption"
+    v-morph
+    @click="clicked($event)"
     >
   </div>
 </template>
@@ -21,17 +22,16 @@ export default {
     bgColor: String,
     originElementId: String
   },
-  watch: {
-    originElementId (val) {
-      console.log('origin element id watched', val)
-      // this.$forceUpdate()
-    }
-  },
-  data () {
-    return {
-      morphOption: {
+  computed: {
+    getVisibility () {
+      return this.isVisible ? {'visibility': 'visible'} : {'visibility': 'hidden'}
+    },
+    getBgColor () {
+      return {'background-color': this.bgColor}
+    },
+    getMorphOption () {
+      return {
         targetElementId: this.originElementId,
-        triggerEventType: 'click',
         params: {
           'background-color': false,
           'border-radius': true
@@ -42,15 +42,12 @@ export default {
       }
     }
   },
-  computed: {
-    getVisibility () {
-      return this.isVisible ? {'visibility': 'visible'} : {'visibility': 'hidden'}
-    },
-    getBgColor () {
-      return {'background-color': this.bgColor}
-    }
-  },
   methods: {
+    clicked (e) {
+      this.$emit('close-modal')
+      // trigger the morphing event
+      e.toElement.dispatchEvent(new CustomEvent('morph', {'detail': this.getMorphOption}))
+    },
     morphDone () {
       console.log('morph is done!!!')
       // this.$emit('morph-done', {appButtonBgColor: this.bgColor})
