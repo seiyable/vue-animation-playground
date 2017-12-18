@@ -3,11 +3,11 @@ import App from './App'
 
 Vue.directive('morph', {
   bind: function (el, binding, vnode) {
-    console.log('----- in morph directive -----')
-    console.log('el', el)
-    console.log('binding', binding)
-    console.log('vnode', vnode)
-    console.log('------------------------------')
+    // console.log('----- in morph directive -----')
+    // console.log('el', el)
+    // console.log('binding', binding)
+    // console.log('vnode', vnode)
+    // console.log('------------------------------')
 
     // ------------------- validations -------------------
     let targetElementId = binding.value.targetElementId
@@ -23,8 +23,8 @@ Vue.directive('morph', {
     }
 
     let params = binding.value.params
-    if (params && !Array.isArray(params)) {
-      console.error('params is not an array.')
+    if (params && typeof params !== 'object') {
+      console.error('params is not an object.')
       return
     }
 

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "animejs": "^2.2.0",
+    "camelcase": "^4.1.0",
     "reset-css": "^2.2.1",
     "vue": "^2.5.2"
   },

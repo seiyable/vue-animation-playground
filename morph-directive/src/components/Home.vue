@@ -3,10 +3,18 @@
 ================================================== -->
 <template>
   <div class="page-wrapper">
-    <div id="origin-box" v-morph="morphOption" @click="clicked($event)">
+    <ul>
+      <app-button
+        v-for="n in appButtonNum"
+        :key="n"
+        :bg-color="getBgColor(n)"
+        :morph-option="morphOption"
+      />
+    </ul>
+    <!-- <div id="origin-box" v-morph="morphOption" @click="clicked($event)">
     </div>
     <div id="target-box">
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -14,21 +22,26 @@
  Vue Script
 ================================================== -->
 <script>
+import AppButton from '@/components/AppButton'
+
 export default {
   name: 'home',
+  components: {
+    AppButton
+  },
   data () {
     return {
+      appButtonNum: 12,
       morphOption: {
-        targetElementId: 'target-box',
+        targetElementId: 'app',
         triggerEventType: 'morph',
-        params: [
-          'backgroundColor', 'borderRadius'
-        ],
+        params: {
+          'background-color': false,
+          'border-radius': true
+        },
         easing: 'easeOutQuint',
         duration: 1000,
-        callback: function () {
-          console.log('morph is done!!')
-        }
+        callback: this.morphDone
       }
     }
   },
@@ -36,6 +49,16 @@ export default {
     clicked (e) {
       // trigger the morphing event
       e.toElement.dispatchEvent(new Event('morph'))
+    },
+    morphDone () {
+      console.log('morph is done!!!')
+    },
+    getBgColor (n) {
+      let h = (360 / this.appButtonNum) * n
+      let s = 80
+      let l = 70
+      let a = 1.0
+      return 'hsla(' + h + ', ' + s + '%, ' + l + '%, ' + a + ')'
     }
   }
 }
@@ -56,13 +79,14 @@ export default {
   width: 400px;
   height: 300px;
   background-color: seagreen;
+  border-radius: 20px;
 }
 
 #target-box {
   position: absolute;
-  top: 600px;
+  top: 450px;
   left: 500px;
-  width: 500px;
+  width: 300px;
   height: 200px;
   background-color: tomato;
 }
