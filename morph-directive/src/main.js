@@ -2,8 +2,29 @@ import Vue from 'vue'
 import App from './App'
 
 Vue.directive('morph', {
+  componentUpdated: function (el, binding, vnode) {
+    console.log('----- in morph directive COMPONENT UPDATED -----')
+    console.log('el', el)
+    console.log('binding', binding)
+    console.log('vnode', vnode)
+    console.log('------------------------------')
+  },
+  inserted: function (el, binding, vnode) {
+    // console.log('----- in morph directive INSERTED -----')
+    // console.log('el', el)
+    // console.log('binding', binding)
+    // console.log('vnode', vnode)
+    // console.log('------------------------------')
+  },
+  updated: function (el, binding, vnode) {
+    console.log('----- in morph directive UPDATED -----')
+    console.log('el', el)
+    console.log('binding', binding)
+    console.log('vnode', vnode)
+    console.log('------------------------------')
+  },
   bind: function (el, binding, vnode) {
-    // console.log('----- in morph directive -----')
+    // console.log('----- in morph directive BINDED -----')
     // console.log('el', el)
     // console.log('binding', binding)
     // console.log('vnode', vnode)

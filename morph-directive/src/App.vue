@@ -1,19 +1,41 @@
 <template>
   <div id="app">
     <morphing-layer ref="morphing-layer" />
-    <home />
+    <modal-window
+      :is-visible="isModalVisible"
+      :bg-color="modalBgColor"
+      :origin-element-id="originElementId"
+    />
+    <home
+      @morph-done="showModal"
+    />
   </div>
 </template>
 
 <script>
 import MorphingLayer from '@/components/MorphingLayer'
+import ModalWindow from '@/components/ModalWindow'
 import Home from '@/components/Home'
 require('reset-css')
 
 export default {
   name: 'app',
   components: {
-    Home, MorphingLayer
+    Home, MorphingLayer, ModalWindow
+  },
+  data () {
+    return {
+      isModalVisible: false,
+      modalBgColor: '',
+      originElementId: ''
+    }
+  },
+  methods: {
+    showModal (payload) {
+      this.modalBgColor = payload.appButtonBgColor
+      this.originElementId = payload.originElementId
+      this.isModalVisible = true
+    }
   }
 }
 </script>

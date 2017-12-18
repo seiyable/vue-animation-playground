@@ -8,7 +8,8 @@
         v-for="n in appButtonNum"
         :key="n"
         :bg-color="getBgColor(n)"
-        :morph-option="morphOption"
+        :id="'app-button-' + n"
+        @morph-done="morphDone"
       />
     </ul>
     <!-- <div id="origin-box" v-morph="morphOption" @click="clicked($event)">
@@ -31,34 +32,19 @@ export default {
   },
   data () {
     return {
-      appButtonNum: 12,
-      morphOption: {
-        targetElementId: 'app',
-        triggerEventType: 'morph',
-        params: {
-          'background-color': false,
-          'border-radius': true
-        },
-        easing: 'easeOutQuint',
-        duration: 1000,
-        callback: this.morphDone
-      }
+      appButtonNum: 12
     }
   },
   methods: {
-    clicked (e) {
-      // trigger the morphing event
-      e.toElement.dispatchEvent(new Event('morph'))
-    },
-    morphDone () {
-      console.log('morph is done!!!')
-    },
     getBgColor (n) {
       let h = (360 / this.appButtonNum) * n
       let s = 80
       let l = 70
       let a = 1.0
       return 'hsla(' + h + ', ' + s + '%, ' + l + '%, ' + a + ')'
+    },
+    morphDone (payload) {
+      this.$emit('morph-done', payload)
     }
   }
 }

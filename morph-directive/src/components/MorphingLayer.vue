@@ -50,6 +50,8 @@ export default {
       this.origin.el = originElement
       this.target.el = document.getElementById(targetElementId)
 
+      console.log('target el id', targetElementId)
+
       // set parameters for the origin box
       let originBcr = this.origin.el.getBoundingClientRect()
       this.origin.absX = originBcr.left

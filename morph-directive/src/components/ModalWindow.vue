@@ -3,11 +3,10 @@
 ================================================== -->
 <template>
   <div
-    class="app-button"
-    :style="[getBgColor]"
+    id="modal-window"
+    :style="[getVisibility, getBgColor]"
     v-morph="morphOption"
-    @click="clicked($event)"
-  >
+    >
   </div>
 </template>
 
@@ -16,15 +15,23 @@
 ================================================== -->
 <script>
 export default {
-  name: 'app-button',
+  name: 'modal',
   props: {
-    bgColor: String
+    isVisible: Boolean,
+    bgColor: String,
+    originElementId: String
+  },
+  watch: {
+    originElementId (val) {
+      console.log('origin element id watched', val)
+      // this.$forceUpdate()
+    }
   },
   data () {
     return {
       morphOption: {
-        targetElementId: 'modal-window',
-        triggerEventType: 'morph', // or just 'click'
+        targetElementId: this.originElementId,
+        triggerEventType: 'click',
         params: {
           'background-color': false,
           'border-radius': true
@@ -36,21 +43,17 @@ export default {
     }
   },
   computed: {
+    getVisibility () {
+      return this.isVisible ? {'visibility': 'visible'} : {'visibility': 'hidden'}
+    },
     getBgColor () {
       return {'background-color': this.bgColor}
     }
   },
   methods: {
-    clicked (e) {
-      // trigger the morphing event
-      e.toElement.dispatchEvent(new Event('morph'))
-    },
     morphDone () {
       console.log('morph is done!!!')
-      this.$emit('morph-done', {
-        appButtonBgColor: this.bgColor,
-        originElementId: this.$el.id
-      })
+      // this.$emit('morph-done', {appButtonBgColor: this.bgColor})
     }
   }
 }
@@ -60,11 +63,13 @@ export default {
  Vue Style
 ================================================== -->
 <style scoped>
-.app-button {
-  width: 200px;
-  height: 200px;
-  margin: 10px;
+#modal-window {
+  position: fixed;
+  width: 90%;
+  height: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 20px;
-  float: left;
 }
 </style>
