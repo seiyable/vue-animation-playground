@@ -3,7 +3,7 @@
 ================================================== -->
 <template>
   <div
-    v-show="state === 'morphing'"
+    v-show="isMorphing"
     id="morphing-layer">
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   name: 'morphing-layer',
   data () {
     return {
-      state: 'origin', // 'origin' or 'morphing' or 'target'
+      isMorphing: false,
       svgWidth: 0,
       svgHeight: 0,
       origin: {},
@@ -33,7 +33,6 @@ export default {
   methods: {
     /* start morphing */
     startMorphing ({originElement, targetElementId, params, easing, duration, callback}) {
-      console.log('in morphing layer...')
       this.initData()
       this.prepareData(originElement, targetElementId, params)
       this.addMorphDiv()
@@ -41,6 +40,7 @@ export default {
     },
     /* initialize data */
     initData () {
+      this.isMorphing = false
       this.origin = {}
       this.target = {}
       this.current = {}
@@ -93,7 +93,7 @@ export default {
       this.$el.appendChild(this.current.el)
     },
     morph (params, easing, duration, callback) {
-      this.state = 'morphing'
+      this.isMorphing = true
 
       // prepare option for morphing animation
       const animOption = {
@@ -118,7 +118,7 @@ export default {
 
       // callback when the animation is done
       morphingAnimation.complete = () => {
-        this.state = 'target'
+        this.isMorphing = false
         this.$el.removeChild(this.current.el)
         if (callback) callback()
       }

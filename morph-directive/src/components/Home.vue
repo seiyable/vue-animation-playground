@@ -5,11 +5,10 @@
   <div class="page-wrapper">
     <ul>
       <app-button
-        v-for="n in appButtonNum"
-        :key="n"
-        :bg-color="getBgColor(n)"
-        :id="'app-button-' + n"
-        @morph-done="morphDone"
+        v-for="item in $store.state.appButtons"
+        :key="item.id"
+        :bg-color="getBgColor(item.id)"
+        :app-button-id="item.id"
       />
     </ul>
   </div>
@@ -26,21 +25,13 @@ export default {
   components: {
     AppButton
   },
-  data () {
-    return {
-      appButtonNum: 12
-    }
-  },
   methods: {
-    getBgColor (n) {
-      let h = (360 / this.appButtonNum) * n
+    getBgColor (index) {
+      let h = (360 / this.$store.state.appButtons.length) * index
       let s = 80
       let l = 70
       let a = 1.0
       return 'hsla(' + h + ', ' + s + '%, ' + l + '%, ' + a + ')'
-    },
-    morphDone (payload) {
-      this.$emit('morph-done', payload)
     }
   }
 }

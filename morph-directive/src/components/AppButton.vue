@@ -4,9 +4,10 @@
 <template>
   <div
     class="app-button"
-    :style="[getBgColor]"
+    :style="[getVisibility, getBgColor]"
+    :id="'app-button-' + appButtonId"
     v-morph
-    @click="clicked($event)"
+    @click="clicked()"
   >
   </div>
 </template>
@@ -18,9 +19,16 @@
 export default {
   name: 'app-button',
   props: {
-    bgColor: String
+    bgColor: String,
+    appButtonId: Number
   },
   computed: {
+    isVisible () {
+      return this.$store.getters.getAppButton(this.appButtonId).isVisible
+    },
+    getVisibility () {
+      return this.isVisible ? {'visibility': 'visible'} : {'visibility': 'hidden'}
+    },
     getBgColor () {
       return {'background-color': this.bgColor}
     },
@@ -38,14 +46,14 @@ export default {
     }
   },
   methods: {
-    clicked (e) {
+    clicked () {
       // trigger the morphing event
-      e.toElement.dispatchEvent(new CustomEvent('morph', {'detail': this.getMorphOption}))
+      this.$store.commit('hideAppButton', {appButtonId: this.appButtonId})
+      this.$el.dispatchEvent(new CustomEvent('morph', {'detail': this.getMorphOption}))
     },
     morphDone () {
-      console.log('morph is done!!!')
-      this.$emit('morph-done', {
-        appButtonBgColor: this.bgColor,
+      this.$store.commit('showModal', {
+        bgColor: this.bgColor,
         originElementId: this.$el.id
       })
     }

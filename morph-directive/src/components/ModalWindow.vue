@@ -6,7 +6,7 @@
     id="modal-window"
     :style="[getVisibility, getBgColor]"
     v-morph
-    @click="clicked($event)"
+    @click="clicked()"
     >
   </div>
 </template>
@@ -17,12 +17,16 @@
 <script>
 export default {
   name: 'modal',
-  props: {
-    isVisible: Boolean,
-    bgColor: String,
-    originElementId: String
-  },
   computed: {
+    isVisible () {
+      return this.$store.state.modalWindow.isVisible
+    },
+    bgColor () {
+      return this.$store.state.modalWindow.bgColor
+    },
+    originElementId () {
+      return this.$store.state.modalWindow.originElementId
+    },
     getVisibility () {
       return this.isVisible ? {'visibility': 'visible'} : {'visibility': 'hidden'}
     },
@@ -43,14 +47,15 @@ export default {
     }
   },
   methods: {
-    clicked (e) {
-      this.$emit('close-modal')
+    clicked () {
+      this.$store.commit('closeModal')
       // trigger the morphing event
-      e.toElement.dispatchEvent(new CustomEvent('morph', {'detail': this.getMorphOption}))
+      this.$el.dispatchEvent(new CustomEvent('morph', {'detail': this.getMorphOption}))
     },
     morphDone () {
-      console.log('morph is done!!!')
-      // this.$emit('morph-done', {appButtonBgColor: this.bgColor})
+      const prefix = 'app-button-'
+      let appButtonId = parseInt(this.originElementId.substring(prefix.length))
+      this.$store.commit('showAppButton', {appButtonId: appButtonId})
     }
   }
 }

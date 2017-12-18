@@ -1,20 +1,18 @@
+<!-- =================================================
+ Vue Template
+================================================== -->
 <template>
   <div id="app">
     <morphing-layer ref="morphing-layer" />
-    <modal-window
-      :is-visible="isModalVisible"
-      :bg-color="modalBgColor"
-      :origin-element-id="originElementId"
-      @close-modal="closeModal"
-    />
-    <home
-      @morph-done="showModal"
-    />
+    <modal-window />
+    <home />
   </div>
 </template>
 
+<!-- =================================================
+ Vue Script
+================================================== -->
 <script>
-import MorphingLayer from '@/components/MorphingLayer'
 import ModalWindow from '@/components/ModalWindow'
 import Home from '@/components/Home'
 require('reset-css')
@@ -22,28 +20,14 @@ require('reset-css')
 export default {
   name: 'app',
   components: {
-    Home, MorphingLayer, ModalWindow
-  },
-  data () {
-    return {
-      isModalVisible: false,
-      modalBgColor: '',
-      originElementId: ''
-    }
-  },
-  methods: {
-    showModal (payload) {
-      this.modalBgColor = payload.appButtonBgColor
-      this.originElementId = payload.originElementId
-      this.isModalVisible = true
-    },
-    closeModal () {
-      this.isModalVisible = false
-    }
+    Home, ModalWindow
   }
 }
 </script>
 
+<!-- =================================================
+ Vue Style
+================================================== -->
 <style>
 html, body, #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
