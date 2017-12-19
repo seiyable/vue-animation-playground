@@ -1,5 +1,4 @@
 import MorphingLayer from '@/components/MorphingLayer'
-const eventType = 'morph'
 
 function isFunction (functionToCheck) {
   let getType = {}
@@ -21,13 +20,13 @@ function validate (payload) {
   }
 
   let easing = payload.easing
-  if (typeof easing !== 'string') {
+  if (easing && typeof easing !== 'string') {
     console.error('easing is not set or an invalid value.')
     return false
   }
 
   let duration = payload.duration
-  if (!Number.isInteger(duration)) {
+  if (duration && !Number.isInteger(duration)) {
     console.error('duration is not set or an invalid value.')
     return false
   }
@@ -43,6 +42,9 @@ function validate (payload) {
 
 let plugin = {
   install (Vue, options) {
+    const eventType = options.defaultEventType || 'morph'
+    const morphingLayerName = options.morphingLayerName || 'morphing-layer'
+
     Vue.directive('morph', {
       bind (el, binding, vnode) {
         // attach event listner to trigger morphing
@@ -54,13 +56,14 @@ let plugin = {
           }
 
           // find a morpying layer component and call its medthod
-          const MorphingLayer = vnode.context.$root.$children[0].$refs['morphing-layer']
-          MorphingLayer.startMorphing({
+          const MorphingLayerVM = vnode.context.$root.$children[0].$refs[morphingLayerName]
+          MorphingLayerVM.startMorphing({
             originElement: el,
             targetElementId: payload.targetElementId,
             params: payload.params,
-            easing: payload.easing,
-            duration: payload.duration,
+            easing: payload.easing || options.defaultEasing || 'linear',
+            duration: payload.duration || options.defaultDuration || 1000,
+            className: payload.className || options.defaultClassName || 'morphing-div',
             callback: payload.callback
           })
         })
@@ -71,7 +74,8 @@ let plugin = {
       }
     })
 
-    Vue.component('morphing-layer', MorphingLayer)
+    // make the morphing-layer component available
+    Vue.component(morphingLayerName, MorphingLayer)
   }
 }
 

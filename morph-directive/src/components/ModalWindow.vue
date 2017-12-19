@@ -40,8 +40,9 @@ export default {
           'background-color': false,
           'border-radius': true
         },
-        easing: 'easeOutQuint',
-        duration: 500,
+        // easing: 'easeOutQuint',
+        // duration: 500,
+        // className: 'morphing-div',
         callback: this.morphDone
       }
     }

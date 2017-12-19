@@ -4,7 +4,7 @@
 <template>
   <div
     v-show="isMorphing"
-    id="morphing-layer">
+    :id="$vnode.componentOptions.tag">
   </div>
 </template>
 
@@ -32,10 +32,10 @@ export default {
   },
   methods: {
     /* start morphing */
-    startMorphing ({originElement, targetElementId, params, easing, duration, callback}) {
+    startMorphing ({originElement, targetElementId, params, easing, duration, className, callback}) {
       this.initData()
       this.prepareData(originElement, targetElementId, params)
-      this.addMorphDiv()
+      this.addMorphDiv(className)
       this.morph(params, easing, duration, callback)
     },
     /* initialize data */
@@ -83,10 +83,10 @@ export default {
         }
       }
     },
-    addMorphDiv () {
+    addMorphDiv (className) {
       // create div element for morphing animation
       let div = document.createElement('div')
-      div.setAttribute('id', 'morphing-div')
+      div.setAttribute('class', className)
       div.style.position = 'absolute'
 
       this.current.el = div
